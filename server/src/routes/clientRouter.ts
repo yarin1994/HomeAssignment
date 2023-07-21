@@ -1,0 +1,17 @@
+import { Router } from 'express';
+import { ClientController } from '../controllers/clientController';
+
+const clientRouter = Router();
+const clientController = new ClientController();
+
+// // Get All Orders
+// // Method: GET
+
+clientRouter.get('/', clientController.get_all_clients);
+clientRouter.get('/find/:name', clientController.find_by_name);
+clientRouter.get('/id/:id', clientController.find_by_id);
+clientRouter.put('/:id', clientController.update_client);
+clientRouter.post('/', clientController.add_client);
+clientRouter.delete('/:id', clientController.delete_client_by_id);
+
+export default clientRouter;
