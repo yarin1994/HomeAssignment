@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientController = void 0;
+const dataValidation = require("./dataValidation");
 const Client = require("../models/clients");
 class ClientController {
     async get_all_clients(req, res) {
@@ -15,14 +16,21 @@ class ClientController {
     async add_client(req, res) {
         try {
             const { id, fullName, phoneNumber, ipAddress, emailAddress } = req.body;
-            await Client.addClient({
-                id,
-                fullName,
-                phoneNumber,
-                ipAddress,
-                emailAddress,
-            });
-            res.status(200).send({ message: `Client ${id} added successfully` });
+            const validClient = dataValidation.validateClient(req.body);
+            if (!validClient) {
+                console.log('not valid');
+                return res.stauts(404).send({ message: 'ip is not valid' });
+            }
+            else {
+                await Client.addClient({
+                    id,
+                    fullName,
+                    phoneNumber,
+                    ipAddress,
+                    emailAddress,
+                });
+                res.status(200).send({ message: `Client ${id} added successfully` });
+            }
         }
         catch (err) {
             res.status(500).send({ message: `Couldn't add Client` });
@@ -69,10 +77,10 @@ class ClientController {
                 emailAddress,
             };
             await Client.updateClient(id, updatedData);
-            res.status(200).send({ message: `client ${id} deleted successfully` });
+            res.status(200).send({ message: `client ${id} updated successfully` });
         }
         catch (err) {
-            res.status(500).send({ message: `Couldn't delete client` });
+            res.status(500).send({ message: `Couldn't update client` });
         }
     }
     async find_by_name(req, res) {

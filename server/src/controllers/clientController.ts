@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import * as dataValidation from './dataValidation';
 import * as Client from '../models/clients';
 
 export class ClientController {
@@ -14,14 +15,20 @@ export class ClientController {
   public async add_client(req: Request, res: Response): Promise<void> {
     try {
       const { id, fullName, phoneNumber, ipAddress, emailAddress } = req.body;
-      await Client.addClient({
-        id,
-        fullName,
-        phoneNumber,
-        ipAddress,
-        emailAddress,
-      });
-      res.status(200).send({ message: `Client ${id} added successfully` });
+      const validClient = dataValidation.validateClient(req.body);
+      if (!validClient) {
+        console.log('not valid');
+        return res.stauts(404).send({ message: 'ip is not valid' });
+      } else {
+        await Client.addClient({
+          id,
+          fullName,
+          phoneNumber,
+          ipAddress,
+          emailAddress,
+        });
+        res.status(200).send({ message: `Client ${id} added successfully` });
+      }
     } catch (err) {
       res.status(500).send({ message: `Couldn't add Client` });
     }
@@ -70,9 +77,9 @@ export class ClientController {
         emailAddress,
       };
       await Client.updateClient(id, updatedData);
-      res.status(200).send({ message: `client ${id} deleted successfully` });
+      res.status(200).send({ message: `client ${id} updated successfully` });
     } catch (err) {
-      res.status(500).send({ message: `Couldn't delete client` });
+      res.status(500).send({ message: `Couldn't update client` });
     }
   }
 
