@@ -19,12 +19,10 @@ class ClientController {
             const { id, fullName, phoneNumber, ipAddress, emailAddress } = req.body;
             const validClient = dataValidation.validateClient(req.body);
             if (!validClient) {
-                console.log(`why???`);
                 res.stauts(404).send({ message: 'Client details are not valid' });
             }
             else {
                 const [country, city] = await Api.ip_api(ipAddress);
-                console.log(`country, city1`, country, city);
                 await Client.addClient({
                     id,
                     fullName,
@@ -34,13 +32,6 @@ class ClientController {
                     country,
                     city,
                 });
-                // await Client.addClient({
-                //   id,
-                //   fullName,
-                //   phoneNumber,
-                //   ipAddress,
-                //   emailAddress,
-                // });
                 res.status(200).send({ message: `Client ${id} added successfully` });
             }
         }

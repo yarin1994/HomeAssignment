@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as dataValidation from './dataValidation';
-import * as Client from '../models/clients';
+import * as Client from '../models/clientsModel';
 import * as Api from './apiController';
 
 export class ClientController {
@@ -30,13 +30,7 @@ export class ClientController {
           country,
           city,
         });
-        // await Client.addClient({
-        //   id,
-        //   fullName,
-        //   phoneNumber,
-        //   ipAddress,
-        //   emailAddress,
-        // });
+
         res.status(200).send({ message: `Client ${id} added successfully` });
       }
     } catch (err) {
