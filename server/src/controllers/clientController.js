@@ -18,8 +18,7 @@ class ClientController {
             const { id, fullName, phoneNumber, ipAddress, emailAddress } = req.body;
             const validClient = dataValidation.validateClient(req.body);
             if (!validClient) {
-                console.log('not valid');
-                return res.stauts(404).send({ message: 'ip is not valid' });
+                res.stauts(404).send({ message: 'Client details are not valid' });
             }
             else {
                 await Client.addClient({
@@ -65,19 +64,25 @@ class ClientController {
         try {
             const { id } = req.params;
             const { fullName, phoneNumber, ipAddress, emailAddress } = req.body;
-            const existingClient = await Client.findById(id);
-            if (!existingClient) {
-                res.status(404).send({ message: `Client with ID ${id} not found` });
-                return;
+            const validClient = dataValidation.validateClient(req.body);
+            if (!validClient) {
+                res.stauts(404).send({ message: 'Client details are not valid' });
             }
-            const updatedData = {
-                fullName,
-                phoneNumber,
-                ipAddress,
-                emailAddress,
-            };
-            await Client.updateClient(id, updatedData);
-            res.status(200).send({ message: `client ${id} updated successfully` });
+            else {
+                const existingClient = await Client.findById(id);
+                if (!existingClient) {
+                    res.status(404).send({ message: `Client with ID ${id} not found` });
+                    return;
+                }
+                const updatedData = {
+                    fullName,
+                    phoneNumber,
+                    ipAddress,
+                    emailAddress,
+                };
+                await Client.updateClient(id, updatedData);
+                res.status(200).send({ message: `client ${id} updated successfully` });
+            }
         }
         catch (err) {
             res.status(500).send({ message: `Couldn't update client` });

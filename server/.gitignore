@@ -1,11 +1,15 @@
 # dependencies
-/node_modules
+.node_modules
 
-# testing
-/coverage
 
 # production
-/build
+.build
+
+
+#files
+.js
+.js.map
+.env
 
 # misc
 .DS_Store
