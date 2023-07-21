@@ -3,8 +3,6 @@ import { setupTables } from './src/db/db_setup';
 import { Application } from 'express';
 import express = require('express');
 import bodyParser = require('body-parser');
-import usecaseRoutes from './src/routes/usecaseRoutes';
-import userRouter from './src/routes/userRoutes';
 import clientRouter from './src/routes/clientRouter';
 
 const app: Application = express();
@@ -13,8 +11,6 @@ const port = 5001;
 //   'mongodb+srv://idolev:il2407@supportplatformdb.tcdb8n4.mongodb.net/';
 
 app.use(bodyParser.json());
-app.use('/users', userRouter);
-app.use('/usecase', usecaseRoutes);
 app.use('/clients', clientRouter);
 
 setupTables();

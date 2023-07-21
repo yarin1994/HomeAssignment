@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as dataValidation from './dataValidation';
 import * as Client from '../models/clients';
+import * as Api from './apiController';
 
 export class ClientController {
   public async get_all_clients(req: Request, res: Response): Promise<void> {
@@ -19,13 +20,23 @@ export class ClientController {
       if (!validClient) {
         res.stauts(404).send({ message: 'Client details are not valid' });
       } else {
+        const [country, city] = await Api.ip_api(ipAddress);
         await Client.addClient({
           id,
           fullName,
           phoneNumber,
           ipAddress,
           emailAddress,
+          country,
+          city,
         });
+        // await Client.addClient({
+        //   id,
+        //   fullName,
+        //   phoneNumber,
+        //   ipAddress,
+        //   emailAddress,
+        // });
         res.status(200).send({ message: `Client ${id} added successfully` });
       }
     } catch (err) {

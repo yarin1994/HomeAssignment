@@ -3,12 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateClient = exports.findById = exports.findByName = exports.deleteById = exports.getAllClients = exports.addClient = void 0;
 const db_setup_1 = require("../db/db_setup");
 const addClient = async (client) => {
-    const [result,] = await db_setup_1.default.query('INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address) VALUES (?, ?, ?,?, ?)', [
+    const [result] = await db_setup_1.default.query('INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)', [
         client.fullName,
         client.emailAddress,
         client.id,
         client.phoneNumber,
         client.ipAddress,
+        client.country,
+        client.city,
     ]);
 };
 exports.addClient = addClient;

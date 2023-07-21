@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateClient = exports.validateEmail = exports.validatePhoneNumber = exports.validateID = exports.validateFullName = exports.validateIPaddress = void 0;
 const validateIPaddress = (ipaddress) => {
-    // regex to match IPv4 address
+    // Regular expression to match IPv4 address
     const ipv4Pattern = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    // regex to match IPv6 address
+    // Regular expression to match IPv6 address
     const ipv6Pattern = /^(([\da-fA-F]{1,4}:){7,7}[\da-fA-F]{1,4}|([\da-fA-F]{1,4}:){1,7}:|([\da-fA-F]{1,4}:){1,6}:[\da-fA-F]{1,4}|([\da-fA-F]{1,4}:){1,5}(:[\da-fA-F]{1,4}){1,2}|([\da-fA-F]{1,4}:){1,4}(:[\da-fA-F]{1,4}){1,3}|([\da-fA-F]{1,4}:){1,3}(:[\da-fA-F]{1,4}){1,4}|([\da-fA-F]{1,4}:){1,2}(:[\da-fA-F]{1,4}){1,5}|[\da-fA-F]{1,4}:((:[\da-fA-F]{1,4}){1,6})|:((:[\da-fA-F]{1,4}){1,7}|:)|fe80:(:[\da-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([\da-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+    // Regular expression to match IPv4 address
     return ipv4Pattern.test(ipaddress) || ipv6Pattern.test(ipaddress);
 };
 exports.validateIPaddress = validateIPaddress;
@@ -17,19 +18,19 @@ const validateFullName = (fullName) => {
 };
 exports.validateFullName = validateFullName;
 const validateID = (id) => {
-    // regex to match a 9-digit id number (positive number)
+    // Regular expression to match a 9-digit positive integer
     const idPattern = /^\d{9}$/;
     return idPattern.test(id);
 };
 exports.validateID = validateID;
 const validatePhoneNumber = (phone) => {
-    // regex to match an Israeli phone number (might start with 05.. or with +972)
+    // Regular expression to match an Israeli phone number
     const phonePattern = /^((0[234589]{1}[0-9]{1})-{0,1}[0-9]{7}|(\+972[234589]{1}[0-9]{1})-{0,1}[0-9]{7})$/;
     return phonePattern.test(phone);
 };
 exports.validatePhoneNumber = validatePhoneNumber;
 const validateEmail = (email) => {
-    // regex expression for basic email validation
+    // Regular expression for basic email validation
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
 };

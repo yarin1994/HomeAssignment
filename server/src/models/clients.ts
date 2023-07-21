@@ -8,17 +8,20 @@ export const addClient = async (client: {
   emailAddress: string;
   phoneNumber: string;
   ipAddress: string;
+  country: string;
+  city: string;
 }): Promise<void> => {
-  const [
-    result,
-  ] = await connection.query(
-    'INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address) VALUES (?, ?, ?,?, ?)',
+  const [result] = await connection.query(
+    'INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)',
+
     [
       client.fullName,
       client.emailAddress,
       client.id,
       client.phoneNumber,
       client.ipAddress,
+      client.country,
+      client.city,
     ]
   );
 };
