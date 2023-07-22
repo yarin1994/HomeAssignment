@@ -12,7 +12,7 @@ const validateIPaddress = (ipaddress) => {
 exports.validateIPaddress = validateIPaddress;
 const validateFullName = (fullName) => {
     // Name will not be empty. must conaint letter, hyphenes and apostrophes.
-    const namePattern = /^[A-Za-z\s'-]+$/;
+    const namePattern = /^\p{Letter}+(\s\p{Letter}+)+$/u;
     const maxLength = 100;
     return namePattern.test(fullName.trim()) && fullName.length <= maxLength;
 };
