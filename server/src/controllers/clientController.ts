@@ -1,10 +1,7 @@
-import express, { Express, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import * as dataValidation from '../utils/dataValidation';
 import * as Client from '../models/clientsModel';
 import * as Api from './apiController';
-import multer from 'multer';
-const fs = require('fs');
-const csvParser = require('csv-parser');
 
 interface Client {
   id: number;

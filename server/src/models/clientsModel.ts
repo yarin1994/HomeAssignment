@@ -30,7 +30,6 @@ export const getAllClients = async (): Promise<mysql.RowDataPacket[]> => {
   try {
     const [rows] = await connection.query(`SELECT * FROM Clients`);
     return rows as RowDataPacket[];
-    // return Promise.resolve(rows)
   } catch (err) {
     console.error('Error Fetching Clients', err);
   }
@@ -38,7 +37,6 @@ export const getAllClients = async (): Promise<mysql.RowDataPacket[]> => {
 
 export const deleteById = async (id: number): Promise<void> => {
   try {
-    // const [rows] = await connection.query(`DELETE FROM Clients WHERE ID = ?`);
     const query = 'DELETE FROM Clients WHERE ID = ?';
     await connection.query(query, [id]);
   } catch (err) {

@@ -42,10 +42,8 @@ const ClientCard: React.FC<ClientCardProps> = (item) => {
       <div className="client-card">
         <button
           onClick={() => {
-            // productOnClick(item.id, item.name, item.price);
             CardOnClick(item.ID);
           }}
-          //   className="product-card button"
         >
           <FontAwesomeIcon icon={faTrash} />
         </button>

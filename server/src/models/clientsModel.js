@@ -21,7 +21,6 @@ const getAllClients = async () => {
     try {
         const [rows] = await db_setup_1.default.query(`SELECT * FROM Clients`);
         return rows;
-        // return Promise.resolve(rows)
     }
     catch (err) {
         console.error('Error Fetching Clients', err);
@@ -30,7 +29,6 @@ const getAllClients = async () => {
 exports.getAllClients = getAllClients;
 const deleteById = async (id) => {
     try {
-        // const [rows] = await connection.query(`DELETE FROM Clients WHERE ID = ?`);
         const query = 'DELETE FROM Clients WHERE ID = ?';
         await db_setup_1.default.query(query, [id]);
     }

@@ -27,15 +27,12 @@ exports.ClientController = void 0;
 const dataValidation = __importStar(require("../utils/dataValidation"));
 const Client = __importStar(require("../models/clientsModel"));
 const Api = __importStar(require("./apiController"));
-const fs = require('fs');
-const csvParser = require('csv-parser');
 class ClientController {
     // gets all clients from DB.
     async get_all_clients(req, res) {
         try {
             const clients = await Client.getAllClients();
-            // res.status(200).send(clients);
-            res.status(200).json(clients);
+            res.status(200).send(clients);
         }
         catch (error) {
             res.status(500).send({ message: 'Server Error' });
@@ -51,6 +48,7 @@ class ClientController {
                 res.status(404).send({ message: 'Client details are not valid' });
             }
             else {
+                // Check if this Client already exists
                 const exist = await Client.findById(Number(id));
                 if (exist.length > 0) {
                     res.status(500).send({ message: `Client Already Exists` });
@@ -58,7 +56,6 @@ class ClientController {
                 else {
                     // Get Country, and City from the api request and store them in variables.
                     const [country, city] = await Api.ip_api(ipAddress);
-                    console.log(`country, city`, country, city);
                     await Client.addClient({
                         id,
                         fullName,
@@ -91,6 +88,7 @@ class ClientController {
     async find_by_id(req, res) {
         try {
             const { id } = req.params;
+            // Check if this Client already exists
             const client = await Client.findById(Number(id));
             if (client.length > 0) {
                 res.status(200).send(client);
@@ -103,7 +101,7 @@ class ClientController {
             res.status(500).send({ message: `error, ${res}` });
         }
     }
-    // Find Client.
+    // Find Client any of the fields.
     async find_client(req, res) {
         try {
             const field = req.query.field;

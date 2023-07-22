@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Client } from '../../pages/HomePage';
-import './Search.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Client } from '../../pages/HomePage';
+import './Search.css';
 
 interface SearchComponentProps {
   onSearchResult: (results: Client[]) => void;

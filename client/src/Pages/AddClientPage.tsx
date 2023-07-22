@@ -36,7 +36,7 @@ const AddClient: React.FC = () => {
     if (name === 'id') {
       setClient((prevState) => ({
         ...prevState,
-        [name]: String(value), // Convert value from string to number
+        [name]: String(value),
       }));
     } else {
       setClient({
@@ -77,7 +77,6 @@ const AddClient: React.FC = () => {
     try {
       const response = await axios.post(`${BASE_URL}/clients`, client);
       if (response.status === 200) {
-        // Clear form after successful submission
         setClient({
           id: '',
           fullName: '',
