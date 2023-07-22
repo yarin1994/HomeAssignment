@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-export const ip_api = async (ip: string) => {
+export const ip_api = async (ip: string): Promise<string[]> => {
   try {
     const base_url = `http://ip-api.com/json/${ip}?fields=status,country,city,query`;
 

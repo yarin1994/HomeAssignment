@@ -18,8 +18,8 @@ export const setupTables = async (): Promise<void> => {
             Phone_Number VARCHAR(255) NOT NULL,
             IP_Address VARCHAR(255) NOT NULL,
             Email_address VARCHAR(255),
-            Continent VARCHAR(255),
-            Country VARCHAR(255)
+            Country VARCHAR(255),
+            City VARCHAR(255)
           )
         `);
     console.log('connected successfully to db!');

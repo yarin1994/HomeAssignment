@@ -11,19 +11,22 @@ export const addClient = async (client: {
   country: string;
   city: string;
 }): Promise<void> => {
-  const [result] = await connection.query(
-    'INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)',
+  const exist = await findById(client.id);
+  if (!exist) {
+    const [result] = await connection.query(
+      'INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)',
 
-    [
-      client.fullName,
-      client.emailAddress,
-      client.id,
-      client.phoneNumber,
-      client.ipAddress,
-      client.country,
-      client.city,
-    ]
-  );
+      [
+        client.fullName,
+        client.emailAddress,
+        client.id,
+        client.phoneNumber,
+        client.ipAddress,
+        client.country,
+        client.city,
+      ]
+    );
+  }
 };
 
 export const getAllClients = async (): Promise<mysql.RowDataPacket[]> => {
