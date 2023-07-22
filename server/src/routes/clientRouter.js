@@ -1,14 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const multer_1 = __importDefault(require("multer"));
 const express_1 = require("express");
 const clientController_1 = require("../controllers/clientController");
 const clientRouter = (0, express_1.Router)();
 const clientController = new clientController_1.ClientController();
-const upload = (0, multer_1.default)({ dest: 'uploads/' }).single('file');
 // Get All Clients
 // Method: GET
 clientRouter.get('/', clientController.get_all_clients);

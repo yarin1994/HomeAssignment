@@ -4,7 +4,6 @@ import { ClientController } from '../controllers/clientController';
 
 const clientRouter = Router();
 const clientController = new ClientController();
-const upload = multer({ dest: 'uploads/' }).single('file');
 
 // Get All Clients
 // Method: GET
