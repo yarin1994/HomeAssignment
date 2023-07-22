@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Client } from '../../pages/HomePage';
+import './Search.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-const SearchComponent = () => {
-  const [searchField, setSearchField] = useState('fullName');
+interface SearchComponentProps {
+  onSearchResult: (results: Client[]) => void;
+}
+
+const SearchComponent: React.FC<SearchComponentProps> = ({
+  onSearchResult,
+}) => {
+  const [searchField, setSearchField] = useState('Full_Name');
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = async () => {
-    console.log(`searchField`, searchField);
     try {
       const response = await axios.get(`http://localhost:5001/clients/search`, {
         params: {
@@ -14,14 +23,14 @@ const SearchComponent = () => {
           query: searchQuery,
         },
       });
-      console.log(response.data);
+      onSearchResult(response.data);
     } catch (error) {
       console.error('Error during search:', error);
     }
   };
 
   return (
-    <div>
+    <div className="search-container">
       <select
         value={searchField}
         onChange={(e) => setSearchField(e.target.value)}
@@ -40,7 +49,9 @@ const SearchComponent = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Enter search query..."
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch}>
+        <FontAwesomeIcon icon={faSearch} />
+      </button>
     </div>
   );
 };

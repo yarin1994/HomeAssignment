@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import ClientCard from '../components/ClientCard';
-import Search from '../components/Search';
+import ClientCard from '../components/ClientCards/ClientCard';
+import Search from '../components/Search/Search';
 import axios from 'axios';
 import './HomePage.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const BASE_URL = 'http://localhost:5001';
 
-interface Client {
+export interface Client {
   ID: number;
   Full_Name: string;
   Phone_Number: string;
@@ -21,10 +23,16 @@ const HomePage = () => {
   // Once a Client is deleted update will turn to true and will trigger the useEffect.
   const [update, setUpdate] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // Keep track of the current page
+  const [searchResults, setSearchResults] = useState<Client[]>([]); // State to store search results
 
   useEffect(() => {
     fetchData();
   }, [update]);
+
+  useEffect(() => {
+    // Whenever searchResults change, update the data state with searchResults
+    setData(searchResults);
+  }, [searchResults]);
 
   const fetchData = async () => {
     const response = await axios.get(`${BASE_URL}/clients`);
@@ -43,8 +51,8 @@ const HomePage = () => {
   };
   return (
     <>
-      <h2>Clients Page</h2>
-      <Search />
+      <Search onSearchResult={setSearchResults} />
+      <button onClick={fetchData}>All Clients</button>
       <div className="card-container">
         {currentItems.map((item) => (
           <ClientCard
@@ -60,14 +68,18 @@ const HomePage = () => {
           />
         ))}
       </div>
-      <button onClick={() => setCurrentPage((old) => Math.max(old - 1, 1))}>
-        Previous
-      </button>
-      <button
-        onClick={() => setCurrentPage((old) => Math.min(old + 1, totalPages))}
-      >
-        Next
-      </button>
+      <div className="pagesButtons">
+        <button onClick={() => setCurrentPage((old) => Math.max(old - 1, 1))}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+          Previous
+        </button>
+        <button
+          onClick={() => setCurrentPage((old) => Math.min(old + 1, totalPages))}
+        >
+          Next
+          <FontAwesomeIcon icon={faArrowRight} />
+        </button>
+      </div>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from 'express';
-import * as dataValidation from './dataValidation';
+import * as dataValidation from '../utils/dataValidation';
 import * as Client from '../models/clientsModel';
 import * as Api from './apiController';
 import multer from 'multer';
@@ -19,6 +19,7 @@ export class ClientController {
   public async get_all_clients(req: Request, res: Response): Promise<void> {
     try {
       const clients = await Client.getAllClients();
+
       res.status(200).send(clients);
     } catch (error) {
       res.status(500).send({ message: 'Server Error' });
@@ -35,13 +36,14 @@ export class ClientController {
       if (!validClient) {
         res.status(404).send({ message: 'Client details are not valid' });
       } else {
+        // Check if this Client already exists
         const exist = await Client.findById(Number(id));
+
         if (exist.length > 0) {
           res.status(500).send({ message: `Client Already Exists` });
         } else {
           // Get Country, and City from the api request and store them in variables.
           const [country, city] = await Api.ip_api(ipAddress);
-          console.log(`country, city`, country, city);
           await Client.addClient({
             id,
             fullName,
@@ -64,6 +66,7 @@ export class ClientController {
   public async delete_client_by_id(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
+
       await Client.deleteById(Number(id));
       res.status(200).send({ message: `client ${id} deleted successfully` });
     } catch (err) {
@@ -75,8 +78,8 @@ export class ClientController {
   public async find_by_id(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
+      // Check if this Client already exists
       const client = await Client.findById(Number(id));
-
       if (client.length > 0) {
         res.status(200).send(client);
       } else {
@@ -87,13 +90,15 @@ export class ClientController {
     }
   }
 
-  // Find Client.
+  // Find Client any of the fields.
   public async find_client(req: Request, res: Response): Promise<void> {
     try {
       const field = req.query.field as string;
       const query = req.query.query as string;
-      if (query) {
-        Client.findClient(field, query);
+
+      if (query.length > 0) {
+        const search = await Client.findClient(field, query);
+        res.status(200).send(search[0]);
       }
     } catch (err) {
       res.status(500).send({ message: `error, ${res}` });
@@ -129,63 +134,6 @@ export class ClientController {
     } catch (err) {
       res.status(500).send({ message: `Couldn't update client` });
     }
-  }
-
-  // Finds Client by name.
-  public async find_by_name(req: Request, res: Response): Promise<void> {
-    try {
-      const { name } = req.params;
-      const clients = await Client.findByName(name);
-      if (clients.length > 0) {
-        res.status(200).send(clients[0]);
-      } else {
-        res
-          .status(404)
-          .send({ message: `Client with name '${name}' not found` });
-      }
-    } catch (err) {
-      res.status(500).send({ message: `error, ${res}` });
-    }
-  }
-
-  public async upload_csv_file(req: Request, res: Response): Promise<void> {
-    const file: Express.Multer.File = req.file;
-    const results = [];
-    fs.createReadStream(req.file.path)
-      .pipe(csvParser())
-      .on('data', (data) => results.push(data))
-      .on('end', async () => {
-        try {
-          for (let row of results) {
-            // const params = [row.Name, row.Email, row.ID, row.Phone, row.IP];
-            const client: Client = {
-              id: row.ID,
-              fullName: row.Name,
-              phoneNumber: row.Phone,
-              ipAddress: row.IP,
-              emailAddress: row.Email,
-            };
-            const validClient = dataValidation.validateClient(client);
-            if (validClient) {
-              const [country, city] = await Api.ip_api(client.ipAddress);
-              console.log(`country, city`, country, city);
-              await Client.addClient({
-                id: client.id,
-                fullName: client.fullName,
-                phoneNumber: client.phoneNumber,
-                ipAddress: client.ipAddress,
-                emailAddress: client.emailAddress,
-                country,
-                city,
-              });
-            }
-          }
-          res.json({ message: 'Data inserted successfully', data: results });
-        } catch (error) {
-          console.log(`error`, error);
-          res.status(500).send('Error inserting data into the database');
-        }
-      });
   }
 }
 

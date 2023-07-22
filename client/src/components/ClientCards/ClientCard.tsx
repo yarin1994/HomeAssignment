@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import './ClientCard.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const BASE_URL = 'http://localhost:5001';
 interface Client {
@@ -38,14 +40,6 @@ const ClientCard: React.FC<ClientCardProps> = (item) => {
   return (
     <>
       <div className="client-card">
-        <h4>Name: {item.Full_Name}</h4>
-        <h4>ID: {item.ID}</h4>
-        <h4>phoneNumber: {item.Phone_Number}</h4>
-        <h4>emailAddress: {item.Email_address}</h4>
-        <h4>ipAddress: {item.IP_Address}</h4>
-        <h4>country: {item.Country}</h4>
-        <h4>city: {item.City}</h4>
-
         <button
           onClick={() => {
             // productOnClick(item.id, item.name, item.price);
@@ -53,8 +47,28 @@ const ClientCard: React.FC<ClientCardProps> = (item) => {
           }}
           //   className="product-card button"
         >
-          Delete
+          <FontAwesomeIcon icon={faTrash} />
         </button>
+        <div>
+          <div className="fields-name">
+            <a>Name:</a>
+            <a>ID:</a>
+            <a>Phone number:</a>
+            <a>Email:</a>
+            <a>IP:</a>
+            {item.Country ? <a>Country:</a> : null}
+            {item.City ? <a>City:</a> : null}
+          </div>
+          <div className="dynamic-values">
+            <a>{item.Full_Name}</a>
+            <a>{item.ID}</a>
+            <a>{item.Phone_Number}</a>
+            <a>{item.Email_address}</a>
+            <a>{item.Country}</a>
+            <a>{item.IP_Address}</a>
+            <a>{item.City}</a>
+          </div>
+        </div>
       </div>
     </>
   );

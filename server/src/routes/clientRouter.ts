@@ -12,10 +12,6 @@ clientRouter.get('/', clientController.get_all_clients);
 
 // Find Clients by name
 // Method: GET
-clientRouter.get('/find/:name', clientController.find_by_name);
-
-// Find Clients by name
-// Method: GET
 clientRouter.get('/search', clientController.find_client);
 
 // Find Client by id.
@@ -33,9 +29,5 @@ clientRouter.post('/', clientController.add_client);
 // Delete Client by id
 // Method: DELETE
 clientRouter.delete('/:id', clientController.delete_client_by_id);
-
-// Upload CSV File
-// Method: POST
-clientRouter.post('/uploads', upload, clientController.upload_csv_file);
 
 export default clientRouter;

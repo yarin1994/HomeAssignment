@@ -14,9 +14,6 @@ const upload = (0, multer_1.default)({ dest: 'uploads/' }).single('file');
 clientRouter.get('/', clientController.get_all_clients);
 // Find Clients by name
 // Method: GET
-clientRouter.get('/find/:name', clientController.find_by_name);
-// Find Clients by name
-// Method: GET
 clientRouter.get('/search', clientController.find_client);
 // Find Client by id.
 // Method: GET
@@ -30,8 +27,5 @@ clientRouter.post('/', clientController.add_client);
 // Delete Client by id
 // Method: DELETE
 clientRouter.delete('/:id', clientController.delete_client_by_id);
-// Upload CSV File
-// Method: POST
-clientRouter.post('/uploads', upload, clientController.upload_csv_file);
 exports.default = clientRouter;
 //# sourceMappingURL=clientRouter.js.map

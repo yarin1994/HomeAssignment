@@ -1,0 +1,60 @@
+.client-card {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  background-color: #f5f5f5;
+  width: 250px;
+  height: 400px; */
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: stretch;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  background-color: #bfe0fa;
+  /* opacity: 60%; */
+  width: 400px;
+  height: 190px;
+}
+.fields-name {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.dynamic-values {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 120px;
+  color: rgb(84, 79, 79);
+}
+.fields-name a,
+.dynamic-values a {
+  margin-top: 5px;
+}
+
+.client-card button {
+  align-self: flex-end;
+  background-color: #bfe0fa;
+  color: #d9534f;
+  border: none;
+}
+
+.client-card button i {
+  margin-right: 5px;
+}
+
+.client-card button:hover {
+  background-color: #c9302c; /* Darker red on hover */
+  color: white;
+  border-radius: 20%;
+}

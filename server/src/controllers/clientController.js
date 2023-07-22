@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientController = void 0;
-const dataValidation = __importStar(require("./dataValidation"));
+const dataValidation = __importStar(require("../utils/dataValidation"));
 const Client = __importStar(require("../models/clientsModel"));
 const Api = __importStar(require("./apiController"));
 const fs = require('fs');
@@ -34,7 +34,8 @@ class ClientController {
     async get_all_clients(req, res) {
         try {
             const clients = await Client.getAllClients();
-            res.status(200).send(clients);
+            // res.status(200).send(clients);
+            res.status(200).json(clients);
         }
         catch (error) {
             res.status(500).send({ message: 'Server Error' });
@@ -107,8 +108,9 @@ class ClientController {
         try {
             const field = req.query.field;
             const query = req.query.query;
-            if (query) {
-                Client.findClient(field, query);
+            if (query.length > 0) {
+                const search = await Client.findClient(field, query);
+                res.status(200).send(search[0]);
             }
         }
         catch (err) {
@@ -144,64 +146,6 @@ class ClientController {
         catch (err) {
             res.status(500).send({ message: `Couldn't update client` });
         }
-    }
-    // Finds Client by name.
-    async find_by_name(req, res) {
-        try {
-            const { name } = req.params;
-            const clients = await Client.findByName(name);
-            if (clients.length > 0) {
-                res.status(200).send(clients[0]);
-            }
-            else {
-                res
-                    .status(404)
-                    .send({ message: `Client with name '${name}' not found` });
-            }
-        }
-        catch (err) {
-            res.status(500).send({ message: `error, ${res}` });
-        }
-    }
-    async upload_csv_file(req, res) {
-        const file = req.file;
-        const results = [];
-        fs.createReadStream(req.file.path)
-            .pipe(csvParser())
-            .on('data', (data) => results.push(data))
-            .on('end', async () => {
-            try {
-                for (let row of results) {
-                    // const params = [row.Name, row.Email, row.ID, row.Phone, row.IP];
-                    const client = {
-                        id: row.ID,
-                        fullName: row.Name,
-                        phoneNumber: row.Phone,
-                        ipAddress: row.IP,
-                        emailAddress: row.Email,
-                    };
-                    const validClient = dataValidation.validateClient(client);
-                    if (validClient) {
-                        const [country, city] = await Api.ip_api(client.ipAddress);
-                        console.log(`country, city`, country, city);
-                        await Client.addClient({
-                            id: client.id,
-                            fullName: client.fullName,
-                            phoneNumber: client.phoneNumber,
-                            ipAddress: client.ipAddress,
-                            emailAddress: client.emailAddress,
-                            country,
-                            city,
-                        });
-                    }
-                }
-                res.json({ message: 'Data inserted successfully', data: results });
-            }
-            catch (error) {
-                console.log(`error`, error);
-                res.status(500).send('Error inserting data into the database');
-            }
-        });
     }
 }
 exports.ClientController = ClientController;

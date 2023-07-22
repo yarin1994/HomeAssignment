@@ -1,23 +1,25 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Navbar from './components/Navbar';
-import LandingPage from './Pages/LandingPage';
-import AddClient from './Pages/AddClientPage';
-import HomePage from './Pages/HomePage';
+import Navbar from './components/Navbar/Navbar';
+import { Link } from 'react-router-dom';
+import AddClient from './pages/AddClientPage';
+import HomePage from './pages/HomePage';
 import './App.css';
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
-        <Header title="My App" />
+        <header className="header">
+          <Link to="/home">
+            {/* {' '} */}
+            <img src="/humanz-logo.png" alt="My Logo" />
+          </Link>
+        </header>
         <Navbar />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/addClient" element={<AddClient />} />
-          {/* <Route path="/contact" element={<Contact />} /> */}
         </Routes>
       </div>
     </Router>

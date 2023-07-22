@@ -11,8 +11,6 @@ export const addClient = async (client: {
   country: string;
   city: string;
 }): Promise<void> => {
-  // const exist = await findById(client.id);
-  // console.log(`exist`, exist);
   const [result] = await connection.query(
     'INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)',
 
@@ -32,6 +30,7 @@ export const getAllClients = async (): Promise<mysql.RowDataPacket[]> => {
   try {
     const [rows] = await connection.query(`SELECT * FROM Clients`);
     return rows as RowDataPacket[];
+    // return Promise.resolve(rows)
   } catch (err) {
     console.error('Error Fetching Clients', err);
   }
@@ -42,16 +41,6 @@ export const deleteById = async (id: number): Promise<void> => {
     // const [rows] = await connection.query(`DELETE FROM Clients WHERE ID = ?`);
     const query = 'DELETE FROM Clients WHERE ID = ?';
     await connection.query(query, [id]);
-  } catch (err) {
-    console.error('Errr Deleteing Client', err);
-  }
-};
-
-export const findByName = async (name: string): Promise<RowDataPacket[]> => {
-  try {
-    const query = 'SELECT * FROM Clients WHERE Full_Name LIKE ?;';
-    const [rows] = await connection.query(query, [`%${name}%`]);
-    return [rows] as RowDataPacket[];
   } catch (err) {
     console.error('Errr Deleteing Client', err);
   }
@@ -71,12 +60,10 @@ export const findClient = async (
   field: string,
   value: string | number
 ): Promise<RowDataPacket[] | null> => {
-  console.log(`field`, value);
   try {
     const query = `SELECT * FROM Clients WHERE ${field} LIKE ?;`;
     const [rows] = await connection.query(query, [`%${value}%`]);
-    console.log(`rows`, [rows]);
-    return rows as RowDataPacket[];
+    return [rows] as RowDataPacket[];
   } catch (err) {
     console.error(`Couldn't find Client`, err);
   }

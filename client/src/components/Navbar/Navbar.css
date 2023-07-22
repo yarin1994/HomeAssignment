@@ -1,8 +1,3 @@
-.navbar {
-  background-color: #282c34;
-  padding: 10px 0;
-}
-
 .navbar ul {
   list-style-type: none;
   display: flex;
@@ -11,8 +6,10 @@
 }
 
 .navbar ul li a {
-  color: white;
+  color: black;
   text-decoration: none;
+  right: 10%;
+  position: absolute;
 }
 
 .navbar ul li a:hover {

@@ -3,3 +3,27 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+.pagesButtons {
+  justify-content: space-between;
+  display: flex;
+  margin: 0px 15%;
+}
+
+.pagesButtons button {
+  border: none;
+  background-color: white;
+  font-size: 20px;
+}
+button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 7%;
+  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
