@@ -14,6 +14,10 @@ clientRouter.get('/', clientController.get_all_clients);
 // Method: GET
 clientRouter.get('/find/:name', clientController.find_by_name);
 
+// Find Clients by name
+// Method: GET
+clientRouter.get('/search', clientController.find_client);
+
 // Find Client by id.
 // Method: GET
 clientRouter.get('/id/:id', clientController.find_by_id);

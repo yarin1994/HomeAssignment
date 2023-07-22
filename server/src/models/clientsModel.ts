@@ -11,22 +11,21 @@ export const addClient = async (client: {
   country: string;
   city: string;
 }): Promise<void> => {
-  const exist = await findById(client.id);
-  if (!exist) {
-    const [result] = await connection.query(
-      'INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)',
+  // const exist = await findById(client.id);
+  // console.log(`exist`, exist);
+  const [result] = await connection.query(
+    'INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)',
 
-      [
-        client.fullName,
-        client.emailAddress,
-        client.id,
-        client.phoneNumber,
-        client.ipAddress,
-        client.country,
-        client.city,
-      ]
-    );
-  }
+    [
+      client.fullName,
+      client.emailAddress,
+      client.id,
+      client.phoneNumber,
+      client.ipAddress,
+      client.country,
+      client.city,
+    ]
+  );
 };
 
 export const getAllClients = async (): Promise<mysql.RowDataPacket[]> => {
@@ -63,6 +62,21 @@ export const findById = async (id: number): Promise<RowDataPacket | null> => {
     const query = 'SELECT * FROM Clients WHERE ID = ?;';
     const [rows] = await connection.query(query, [id]);
     return rows as RowDataPacket;
+  } catch (err) {
+    console.error(`Couldn't find Client`, err);
+  }
+};
+
+export const findClient = async (
+  field: string,
+  value: string | number
+): Promise<RowDataPacket[] | null> => {
+  console.log(`field`, value);
+  try {
+    const query = `SELECT * FROM Clients WHERE ${field} LIKE ?;`;
+    const [rows] = await connection.query(query, [`%${value}%`]);
+    console.log(`rows`, [rows]);
+    return rows as RowDataPacket[];
   } catch (err) {
     console.error(`Couldn't find Client`, err);
   }

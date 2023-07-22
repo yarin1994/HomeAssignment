@@ -50,18 +50,25 @@ class ClientController {
                 res.status(404).send({ message: 'Client details are not valid' });
             }
             else {
-                // Get Country, and City from the api request and store them in variables.
-                const [country, city] = await Api.ip_api(ipAddress);
-                await Client.addClient({
-                    id,
-                    fullName,
-                    phoneNumber,
-                    ipAddress,
-                    emailAddress,
-                    country,
-                    city,
-                });
-                res.status(200).send({ message: `Client ${id} added successfully` });
+                const exist = await Client.findById(Number(id));
+                if (exist.length > 0) {
+                    res.status(500).send({ message: `Client Already Exists` });
+                }
+                else {
+                    // Get Country, and City from the api request and store them in variables.
+                    const [country, city] = await Api.ip_api(ipAddress);
+                    console.log(`country, city`, country, city);
+                    await Client.addClient({
+                        id,
+                        fullName,
+                        phoneNumber,
+                        ipAddress,
+                        emailAddress,
+                        country,
+                        city,
+                    });
+                    res.status(200).send({ message: `Client ${id} added successfully` });
+                }
             }
         }
         catch (err) {
@@ -89,6 +96,19 @@ class ClientController {
             }
             else {
                 res.status(404).send({ message: `Client with id: '${id}' not found` });
+            }
+        }
+        catch (err) {
+            res.status(500).send({ message: `error, ${res}` });
+        }
+    }
+    // Find Client.
+    async find_client(req, res) {
+        try {
+            const field = req.query.field;
+            const query = req.query.query;
+            if (query) {
+                Client.findClient(field, query);
             }
         }
         catch (err) {

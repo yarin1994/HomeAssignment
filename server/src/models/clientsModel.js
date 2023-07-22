@@ -3,21 +3,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateClient = exports.findById = exports.findByName = exports.deleteById = exports.getAllClients = exports.addClient = void 0;
+exports.updateClient = exports.findClient = exports.findById = exports.findByName = exports.deleteById = exports.getAllClients = exports.addClient = void 0;
 const db_setup_1 = __importDefault(require("../db/db_setup"));
 const addClient = async (client) => {
-    const exist = await (0, exports.findById)(client.id);
-    if (!exist) {
-        const [result] = await db_setup_1.default.query('INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)', [
-            client.fullName,
-            client.emailAddress,
-            client.id,
-            client.phoneNumber,
-            client.ipAddress,
-            client.country,
-            client.city,
-        ]);
-    }
+    // const exist = await findById(client.id);
+    // console.log(`exist`, exist);
+    const [result] = await db_setup_1.default.query('INSERT INTO Clients (Full_Name, Email_Address, ID, Phone_Number, IP_Address, Country, City) VALUES (?, ?, ?,?, ?, ?, ?)', [
+        client.fullName,
+        client.emailAddress,
+        client.id,
+        client.phoneNumber,
+        client.ipAddress,
+        client.country,
+        client.city,
+    ]);
 };
 exports.addClient = addClient;
 const getAllClients = async () => {
@@ -63,6 +62,19 @@ const findById = async (id) => {
     }
 };
 exports.findById = findById;
+const findClient = async (field, value) => {
+    console.log(`field`, value);
+    try {
+        const query = `SELECT * FROM Clients WHERE ${field} LIKE ?;`;
+        const [rows] = await db_setup_1.default.query(query, [`%${value}%`]);
+        console.log(`rows`, [rows]);
+        return rows;
+    }
+    catch (err) {
+        console.error(`Couldn't find Client`, err);
+    }
+};
+exports.findClient = findClient;
 const updateClient = async (id, updatedClient) => {
     try {
         const { fullName, phoneNumber, ipAddress, emailAddress } = updatedClient;

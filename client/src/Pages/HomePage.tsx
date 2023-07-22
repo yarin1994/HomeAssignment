@@ -18,9 +18,8 @@ interface Client {
 
 const HomePage = () => {
   const [data, setData] = useState<Client[]>([]);
-  //   const [search, setSearch] = useState('');
-  const [update, setUpdate] = useState(false); // new state variable
-
+  // Once a Client is deleted update will turn to true and will trigger the useEffect.
+  const [update, setUpdate] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // Keep track of the current page
 
   useEffect(() => {
@@ -38,67 +37,37 @@ const HomePage = () => {
 
   const totalPages = Math.ceil(data.length / 10);
 
-  //   const filteredData = data.filter(
-  //     (item) =>
-  //       item.Full_Name.toLowerCase().includes(search.toLowerCase()) ||
-  //       item.ID.toString().includes(search) ||
-  //       item.Phone_Number.includes(search) ||
-  //       item.Email_address.toLowerCase().includes(search.toLowerCase()) ||
-  //       item.IP_Address.includes(search) ||
-  //       item.Country.toLowerCase().includes(search.toLowerCase()) ||
-  //       item.City.toLowerCase().includes(search.toLowerCase())
-  //   );
   const handleDelete = (id: number) => {
-    setUpdate((update) => !update); // toggle update state to trigger useEffect
+    // Changes the update flag back to false
+    setUpdate((update) => !update);
   };
   return (
     <>
-      <h2>Products Page</h2>
-
+      <h2>Clients Page</h2>
+      <Search />
       <div className="card-container">
-        {/* {data.length ? (
-          data.map((item) => (
-            <div key={item.ID}>
-              <ClientCard
-                fullName={item.Full_Name}
-                id={item.ID}
-                emailAddress={item.Email_address}
-                ipAddress={item.IP_Address}
-                phoneNumber={item.Phone_Number}
-                country={item.Country}
-                city={item.City}
-              />
-            </div>
-          ))
-        ) : (
-          <h2>Loading...</h2>
-        )} */}
-        {/* <Search search={search} setSearch={setSearch} /> */}
-
-        <div className="card-container">
-          {currentItems.map((item) => (
-            <ClientCard
-              Full_Name={item.Full_Name}
-              ID={item.ID}
-              Email_address={item.Email_address}
-              IP_Address={item.IP_Address}
-              Phone_Number={item.Phone_Number}
-              Country={item.Country}
-              City={item.City}
-              onDelete={handleDelete}
-              key={item.ID}
-            />
-          ))}
-        </div>
-        <button onClick={() => setCurrentPage((old) => Math.max(old - 1, 1))}>
-          Previous
-        </button>
-        <button
-          onClick={() => setCurrentPage((old) => Math.min(old + 1, totalPages))}
-        >
-          Next
-        </button>
+        {currentItems.map((item) => (
+          <ClientCard
+            Full_Name={item.Full_Name}
+            ID={item.ID}
+            Email_address={item.Email_address}
+            IP_Address={item.IP_Address}
+            Phone_Number={item.Phone_Number}
+            Country={item.Country}
+            City={item.City}
+            onDelete={handleDelete}
+            key={item.ID}
+          />
+        ))}
       </div>
+      <button onClick={() => setCurrentPage((old) => Math.max(old - 1, 1))}>
+        Previous
+      </button>
+      <button
+        onClick={() => setCurrentPage((old) => Math.min(old + 1, totalPages))}
+      >
+        Next
+      </button>
     </>
   );
 };
