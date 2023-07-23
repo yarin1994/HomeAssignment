@@ -1,6 +1,6 @@
 .client-card {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: column-reverse;
   align-items: stretch;
   border: 1px solid #333;
   border-radius: 10px;

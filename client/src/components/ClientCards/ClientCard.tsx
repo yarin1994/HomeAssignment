@@ -62,8 +62,8 @@ const ClientCard: React.FC<ClientCardProps> = (item) => {
             <a>{item.ID}</a>
             <a>{item.Phone_Number}</a>
             <a>{item.Email_address}</a>
-            <a>{item.Country}</a>
             <a>{item.IP_Address}</a>
+            <a>{item.Country}</a>
             <a>{item.City}</a>
           </div>
         </div>
